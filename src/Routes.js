@@ -1,19 +1,19 @@
-import { Profile } from './profile/Profile';
-import { PersonRounded, BallotRounded } from '@material-ui/icons';
-import { AbilityScores } from './abilityScores/AbilityScores';
+import { Main } from './main/Main';
+import { PersonRounded, SportsMma } from '@material-ui/icons';
+import { Combat } from './combat/Combat';
 
 const Routes = [
     {
         path: '/',
-        sidebarName: 'Profile',
+        sidebarName: 'Main',
         iconComponent: PersonRounded,
-        component: Profile
+        component: Main
     },
     {
-        path: '/abilities',
-        sidebarName: 'Ability Scores',
-        iconComponent: BallotRounded,
-        component: AbilityScores
+        path: '/combat',
+        sidebarName: 'Combat',
+        iconComponent: SportsMma,
+        component: Combat
     }
 ];
 

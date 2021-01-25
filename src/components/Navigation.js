@@ -1,69 +1,28 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { MenuItem, MenuList } from '@material-ui/core';
+import { MenuItem, MenuList, SwipeableDrawer } from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router';
 import Routes from '../Routes';
-
-const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex'
     },
-    appBar: {
-        zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen
-        })
-    },
-    appBarShift: {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen
-        })
-    },
-    menuButton: {
-        marginRight: 36
-    },
-    hide: {
-        display: 'none'
-    },
     drawer: {
-        width: drawerWidth,
+        width: 240,
         flexShrink: 0,
         whiteSpace: 'nowrap'
     },
-    drawerOpen: {
-        width: drawerWidth,
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen
-        })
-    },
-    drawerClose: {
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen
-        }),
-        overflowX: 'hidden',
-        width: theme.spacing(7) + 1,
-        [theme.breakpoints.up('sm')]: {
-            width: theme.spacing(9) + 1
-        }
+    menuButton: {
+        marginRight: 36
     },
     toolbar: {
         display: 'flex',
@@ -91,7 +50,7 @@ export const Navigation = ({ children }) => {
 
     const handleNavItemClick = route => () => {
         history.push(route.path);
-    }
+    };
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -115,9 +74,7 @@ export const Navigation = ({ children }) => {
                         aria-label="open drawer"
                         onClick={handleDrawerOpen}
                         edge="start"
-                        className={clsx(classes.menuButton, {
-                            [classes.hide]: open
-                        })}
+                        className={classes.menuButton}
                     >
                         <MenuIcon/>
                     </IconButton>
@@ -126,34 +83,24 @@ export const Navigation = ({ children }) => {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Drawer
-                variant="permanent"
-                className={clsx(classes.drawer, {
-                    [classes.drawerOpen]: open,
-                    [classes.drawerClose]: !open
-                })}
-                classes={{
-                    paper: clsx({
-                        [classes.drawerOpen]: open,
-                        [classes.drawerClose]: !open
-                    })
-                }}
+            <SwipeableDrawer
+                anchor="left"
+                open={open}
+                onOpen={handleDrawerOpen}
+                onClose={handleDrawerClose}
             >
-                <div className={classes.toolbar}>
-                    <IconButton onClick={handleDrawerClose}>
-                        <ChevronLeftIcon/>
-                    </IconButton>
-                </div>
-                <Divider/>
+                <div className={classes.toolbar}/>
                 <MenuList>
                     {Routes.map((route, index) => (
                         <MenuItem selected={activeRoute(route)} button onClick={handleNavItemClick(route)} key={index}>
-                            <ListItemIcon><route.iconComponent /></ListItemIcon>
+                            <ListItemIcon>
+                                <route.iconComponent/>
+                            </ListItemIcon>
                             <ListItemText primary={route.sidebarName}/>
                         </MenuItem>
                     ))}
                 </MenuList>
-            </Drawer>
+            </SwipeableDrawer>
             <main className={classes.content}>
                 <div className={classes.toolbar}/>
                 {children}

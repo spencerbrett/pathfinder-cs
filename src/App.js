@@ -1,5 +1,5 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { Profile } from './profile/Profile';
+import { Main } from './main/Main';
 import { Navigation } from './components/Navigation';
 import { Switch } from 'react-router-dom';
 import Routes from './Routes';
@@ -15,7 +15,7 @@ function App() {
                         <Route exact path={route.path} key={route.path}>
                             <route.component/>
                         </Route>)}
-                    <Profile/>
+                    <Main/>
                 </Switch>
             </Navigation>
         </>
